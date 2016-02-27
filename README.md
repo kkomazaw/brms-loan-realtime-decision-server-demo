@@ -242,7 +242,7 @@
 
   ![img20](https://raw.githubusercontent.com/kkomazaw/brms-loan-realtime-decision-server-demo/master/docs/demo-images/handson20.png)
 
-1. これでルールが作成できました。[ソース]タブをクリックするとDRLが確認できます。
+1. これでルールが作成できました。[ソース]タブをクリックするとDRLが確認できます。[保存]ボタンを押してルールを保存してください。
 
   ![img21](https://raw.githubusercontent.com/kkomazaw/brms-loan-realtime-decision-server-demo/master/docs/demo-images/handson21.png)
 
@@ -253,7 +253,7 @@
 1. 借入限度額は計算式が複雑なため、直接DRL形式で作成します。[新しいアイテム]->[DRLファイル]を選択し、ルール名を”借入限度額の計算”として作成します。DRLエディターが表示されますので、以下のDRLをコピーして保存してください。
 
   ```借入限度額の計算.drl
-  package com.redhat.loandemo;
+  package org.example.loandemo;
   import java.math.BigDecimal;
   import java.math.MathContext;
 
@@ -358,12 +358,14 @@
 
 これで全てのビジネスルールが完成しました。
 
-  ```
-  コラム：作成したビジネスルールの内部動作
+<div class='column'>
+  <u>コラム：作成したビジネスルールの内部動作</u><br/>
+
+
   BRMSは、ファクトデータ（データモデルで作成したデータオブジェクト）を管理する「ワーキングメモリー」と、ビジネスルールを管理する「プロダクションメモリー」の相互作用によりビジネスルールを実行しています。ファクトデータが新規に挿入されるか、更新されたタイミングで、ビジネスルールにファクトデータがマッチするかどうかを判断します（パターンマッチング）。マッチしたビジネスルールとファクトデータのセットは「アクティベート」された状態として、「アジェンダ」と呼ばれる領域に格納されます。その後「ファイヤー」と呼ばれる命令により、アジェンダにリストされたビジネスルールのアクションが順番に実行されます。
   　今回、ビジネスルール１以外、updateまたはmodifyという関数によりファクトデータの変更を行っている理由は、そのタイミングでビジネスルールの「再評価」を行い、新たにマッチするビジネスルールを見つけるためです。
   　この動きをビジネスルールの「前向き推論（forward chaining）」と呼び、BRMSプログラミングにおける、大きな特徴の一つです。
-  ```
+</div>
 
 ## ビジネスルールのテスト
 
@@ -468,16 +470,16 @@
   ```body
   <batch-execution lookup="defaultStatelessKieSession">
     <insert out-identifier="applicant" return-object="true">
-      <com.redhat.loandemo.Applicant>
+      <org.example.loandemo.Applicant>
         <name>あなたの名前</name>
         <salary>あなたの年収</salary>
-      </com.redhat.loandemo.Applicant>
+      </org.example.loandemo.Applicant>
     </insert>
       <insert out-identifier="loan" return-object="true">
-      <com.redhat.loandemo.Loan>
+      <org.example.loandemo.Loan>
         <amount>3000</amount>
         <duration>30</duration>
-      </com.redhat.loandemo.Loan>
+      </org.example.loandemo.Loan>
     </insert>
     <fire-all-rules out-identifier="myFireCommand"/>
   </batch-execution>
@@ -518,6 +520,6 @@
 1. Firefoxを開き、以下のURLより RESTClientプラグインを追加します。https://addons.mozilla.org/ja/firefox/addon/restclient/
 
 1. BRMSサーバーが起動した後、以下のURLよりBusiness Centralのホームページにアクセスできることを確認します。
-http://<BRMSサーバーのホスト名>:8080/business-central
+http://localhost:8080/business-central
 
 以上
